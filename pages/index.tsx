@@ -1,5 +1,5 @@
-import { useMemo } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useMemo, useState } from "react";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import {
@@ -8,12 +8,40 @@ import {
   getPokemonImageUrl,
   type PokemonListItem,
   type PokemonListResponse,
+  getPokemonByName, 
 } from "../services/pokemon";
 
 export default function Home() {
   const router = useRouter();
 
-  const limit = 20; 
+  const [nameQuery, setNameQuery] = useState("");
+  const [notFound, setNotFound] = useState(false);
+
+  const { mutateAsync: searchPokemon, isPending: isSearching } = useMutation({
+    mutationFn: (name: string) => getPokemonByName(name),
+  });
+
+  async function handleSearchSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setNotFound(false);
+    const q = nameQuery.trim();
+    if (!q) return;
+
+    const result = await searchPokemon(q);
+    if (result && result.name) {
+      const currentPage =
+        typeof router.query.page === "string" ? router.query.page : "1";
+      router.push(
+        { pathname: `/pokemon/${result.name}`, query: { page: currentPage } },
+        undefined,
+        { shallow: true }
+      );
+    } else {
+      setNotFound(true);
+    }
+  }
+
+  const limit = 20;
   const pageFromQuery =
     typeof router.query.page === "string" ? parseInt(router.query.page, 10) : 1;
   const page = Number.isFinite(pageFromQuery) && pageFromQuery > 0 ? pageFromQuery : 1;
@@ -23,7 +51,7 @@ export default function Home() {
   const { data, isLoading, isFetching, error } = useQuery<PokemonListResponse>({
     queryKey: ["pokemons", limit, offset],
     queryFn: () => getPokemons(limit, offset),
-    placeholderData: (prev) => prev, 
+    placeholderData: (prev) => prev,
     staleTime: 30_000,
   });
 
@@ -42,9 +70,35 @@ export default function Home() {
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
+      <header className="mb-4">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <h1 className="text-3xl font-bold">Pokédex</h1>
+
+          <form onSubmit={handleSearchSubmit} className="flex items-center gap-2">
+            <input
+              value={nameQuery}
+              onChange={(e) => setNameQuery(e.target.value)}
+              placeholder="Buscar por nome exato (ex: pikachu)"
+              className="w-72 rounded-md border border-gray-300 px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-blue-500"
+              aria-label="Buscar pokémon por nome"
+            />
+            <button
+              type="submit"
+              disabled={isSearching || !nameQuery.trim()}
+              className="rounded-md border border-gray-300 px-3 py-1.5 text-sm disabled:opacity-50 hover:bg-gray-50"
+            >
+              {isSearching ? "Buscando..." : "Buscar"}
+            </button>
+          </form>
+        </div>
+
+        {notFound && (
+          <p className="mt-2 text-sm text-red-600">Pokémon não encontrado. Verifique se digitou o nome corretamente</p>
+        )}
+      </header>
+
       <nav className="mb-4 flex items-center justify-between" aria-label="Paginação">
-        <h1 className="text-3xl font-bold">Pokédex</h1>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 ml-auto">
           <button
             onClick={handlePrev}
             disabled={!canPrev}
@@ -53,7 +107,7 @@ export default function Home() {
           >
             ‹ Anterior
           </button>
-          <span aria-live="polite" className="min-w-[140px] text-sm text-gray-600 text-center">
+          <span aria-live="polite" className="min-w-[160px] text-sm text-gray-600 text-center">
             Página {page} de {totalPages}
             {isFetching && <span className="ml-1 animate-pulse"> atualizando…</span>}
           </span>

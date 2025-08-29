@@ -67,3 +67,16 @@ export const getPokemonByNameOrId = async ( nameOrId: string | number ): Promise
   const { data } = await api.get<PokemonDetails>(`/pokemon/${nameOrId}`);
   return data;
 };
+
+export async function getPokemonByName(name: string) {
+  const n = name.trim().toLowerCase();
+  if (!n) return null;
+
+  const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${n}`);
+  if (!res.ok) {
+    if (res.status === 404) return null; 
+    throw new Error("Erro ao buscar Pokémon");
+  }
+  return res.json(); 
+}
+
