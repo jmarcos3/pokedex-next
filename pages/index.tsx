@@ -4,12 +4,10 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import {
   getPokemons,
-  getPokemonIdFromUrl,
-  getPokemonImageUrl,
-  type PokemonListItem,
-  type PokemonListResponse,
-  getPokemonByName, 
-} from "../services/pokemon";
+  getPokemonByName,
+} from "@/services/pokemon";
+import { getPokemonIdFromUrl, getPokemonImageUrl } from "@/lib/pokeapi";
+import type { PokemonListItem, PokemonListResponse } from "@/types/pokemon";
 
 export default function Home() {
   const router = useRouter();

@@ -1,10 +1,8 @@
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
-import {
-  getPokemonByNameOrId,
-  type PokemonDetails,
-} from "../../services/pokemon";
+import { getPokemonByNameOrId } from "@/services/pokemon";
+import type { PokemonDetails } from "@/types/pokemon";
 
 export default function PokemonDetailsPage() {
   const router = useRouter();
@@ -19,7 +17,7 @@ export default function PokemonDetailsPage() {
   const { data, isLoading, isFetching, error } = useQuery<PokemonDetails>({
     queryKey: ["pokemon", name],
     queryFn: () => getPokemonByNameOrId(name as string),
-    enabled, 
+    enabled,
     staleTime: 60_000,
   });
 
@@ -52,7 +50,7 @@ export default function PokemonDetailsPage() {
     return (
       <div className="p-6 max-w-3xl mx-auto">
         <header className="mb-4 flex items-center justify-between">
-          <h1 className="text-2xl font-bold capitalize">{name}</h1>
+          <h1 className="text-2xl font-bold capitalize">{name as string}</h1>
           <Link href="/" className="text-sm text-blue-600 hover:underline">← Voltar</Link>
         </header>
         <p className="text-red-600">Não foi possível carregar este Pokémon.</p>
@@ -61,8 +59,7 @@ export default function PokemonDetailsPage() {
   }
 
   const art =
-    data.sprites.other?.["official-artwork"]?.front_default ??
-    "/placeholder.png"; 
+    data.sprites.other?.["official-artwork"]?.front_default ?? "/placeholder.png";
 
   return (
     <div className="p-6 max-w-3xl mx-auto">
@@ -116,7 +113,7 @@ export default function PokemonDetailsPage() {
         <h2 className="mb-4 text-lg font-semibold">Atributos</h2>
         <ul className="space-y-3">
           {data.stats.map((s) => {
-            const value = s.base_stat;       
+            const value = s.base_stat;
             const pct = Math.min(100, Math.round((value / 255) * 100));
             return (
               <li key={s.stat.name}>
