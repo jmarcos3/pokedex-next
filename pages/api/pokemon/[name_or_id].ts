@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { pokeApi } from "@/lib/pokeapi";
 import type { PokemonDetails } from "@/types/pokemon";
+import { buildAiAugmentation } from "@/lib/ai";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "GET") return res.status(405).json({ message: "Method Not Allowed" });
@@ -11,14 +12,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    const { data } = await pokeApi.get<PokemonDetails>(`/pokemon/${name_or_id.toString().toLowerCase()}`);
+    const { data } = await pokeApi.get<PokemonDetails>(
+      `/pokemon/${name_or_id.toString().toLowerCase()}`
+    );
+
+    const { ai_quote, ai_fun_fact, ai_battle_tip } = buildAiAugmentation(data);
 
     res.setHeader("Cache-Control", "s-maxage=120, stale-while-revalidate=600");
-
-    return res.status(200).json(data);
+    return res.status(200).json({ ...data, ai_quote, ai_fun_fact, ai_battle_tip });
   } catch (err: any) {
     const status = err?.response?.status ?? 500;
-
     if (status === 404) return res.status(404).json({ message: "Pokémon não encontrado" });
     return res.status(500).json({ message: "Erro ao obter Pokémon" });
   }

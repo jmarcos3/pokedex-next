@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { getPokemonByNameOrId } from "@/services/pokemon";
-import type { PokemonDetails } from "@/types/pokemon";
+import type { PokemonDetailsResponse } from "@/types/pokemon";
 
 export default function PokemonDetailsPage() {
   const router = useRouter();
@@ -14,7 +14,7 @@ export default function PokemonDetailsPage() {
 
   const enabled = typeof name === "string" && name.length > 0;
 
-  const { data, isLoading, isFetching, error } = useQuery<PokemonDetails>({
+  const { data, isLoading, isFetching, error } = useQuery<PokemonDetailsResponse>({
     queryKey: ["pokemon", name],
     queryFn: () => getPokemonByNameOrId(name as string),
     enabled,
@@ -136,6 +136,28 @@ export default function PokemonDetailsPage() {
           })}
         </ul>
       </section>
+
+      <section className="mt-6 rounded-xl border bg-white p-6 space-y-4">
+        <h2 className="text-lg font-semibold">Da IA</h2>
+
+        <div>
+          <h3 className="text-sm font-medium text-gray-600">Citação</h3>
+          <blockquote className="mt-1 rounded-lg border-l-4 pl-3 italic">
+            {data.ai_quote}
+          </blockquote>
+        </div>
+
+        <div>
+          <h3 className="text-sm font-medium text-gray-600">Curiosidade</h3>
+          <p className="mt-1">{data.ai_fun_fact}</p>
+        </div>
+
+        <div>
+          <h3 className="text-sm font-medium text-gray-600">Dica de batalha</h3>
+          <p className="mt-1">{data.ai_battle_tip}</p>
+        </div>
+      </section>
+
     </div>
   );
 }

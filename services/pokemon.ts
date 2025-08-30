@@ -2,6 +2,7 @@ import axios from "axios";
 import type {
   PokemonListResponse,
   PokemonDetails,
+  PokemonDetailsResponse,
 } from "@/types/pokemon";
 
 export const getPokemons = async (limit = 20, offset = 0): Promise<PokemonListResponse> => {
@@ -9,8 +10,8 @@ export const getPokemons = async (limit = 20, offset = 0): Promise<PokemonListRe
   return data;
 };
 
-export const getPokemonByNameOrId = async (nameOrId: string | number): Promise<PokemonDetails> => {
-  const { data } = await axios.get<PokemonDetails>(`/api/pokemon/${nameOrId}`);
+export const getPokemonByNameOrId = async (nameOrId: string | number): Promise<PokemonDetailsResponse> => {
+  const { data } = await axios.get<PokemonDetailsResponse>(`/api/pokemon/${nameOrId}`);
   return data;
 };
 

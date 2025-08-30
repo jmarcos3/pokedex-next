@@ -27,6 +27,10 @@ export type PokemonStat = {
 export type PokemonDetails = {
   id: number;
   name: string;
+  height: number;
+  weight: number;
+  base_experience: number | null;
+
   sprites: {
     other?: {
       ["official-artwork"]?: { front_default: string | null };
@@ -36,3 +40,11 @@ export type PokemonDetails = {
   abilities: PokemonAbility[];
   stats: PokemonStat[];
 };
+
+export type AiAugmentation = {
+  ai_quote: string;
+  ai_fun_fact: string;
+  ai_battle_tip: string;
+};
+
+export type PokemonDetailsResponse = PokemonDetails & AiAugmentation;
