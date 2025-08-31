@@ -1,7 +1,6 @@
 import axios from "axios";
 import type {
   PokemonListResponse,
-  PokemonDetails,
   PokemonDetailsResponse,
 } from "@/types/pokemon";
 
