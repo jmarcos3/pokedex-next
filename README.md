@@ -107,3 +107,4 @@ Essas informações são exibidas junto aos detalhes de cada Pokémon, simulando
 - Melhorias de UI/UX com shadcn/ui
 - Tradução de tipos e habilidades para PT-BR
 - Deploy em Vercel
+- Integração com uma API de IA real para gerar frases, curiosidades e dicas dinâmicas
