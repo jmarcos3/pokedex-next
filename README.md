@@ -51,6 +51,7 @@ http://localhost:3000
 --- 
 
 ## ⚙️ Estrutura de Pastas
+```
 /components
   card_skeleton.tsx   -> Componente de placeholder para loading
   pagination.tsx      -> Componente de paginação
@@ -84,6 +85,7 @@ http://localhost:3000
 
 /types
   pokemon.ts          -> Tipagens do domínio (Pokémon, stats, etc.)
+```
 
 ---
 
