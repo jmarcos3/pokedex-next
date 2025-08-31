@@ -1,36 +1,106 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Pokédex - Desafio Técnico
 
-## Getting Started
+Aplicação desenvolvida como desafio técnico para avaliar conhecimentos em **Next.js**, **TypeScript** e integração entre front-end e back-end.  
+O projeto consome a [PokeAPI](https://pokeapi.co/) e permite explorar Pokémons com listagem paginada, busca por nome/ID, e página de detalhes.  
+Como diferencial, foi incluída uma funcionalidade de **IA mockada**, que gera curiosidades e frases divertidas sobre cada Pokémon.
 
-First, run the development server:
+![Demonstração do Projeto](.github/assets/demo.gif)
+---
 
+## ✨ Funcionalidades
+
+- **Listagem de Pokémons** com paginação
+- **Busca** por nome ou ID
+- **Página de detalhes** de cada Pokémon com:
+  - Nome, imagem oficial e tipos
+  - Status base (força, velocidade, etc.)
+  - Habilidades
+  - **IA mockada**: curiosidades e frases extras
+- Estrutura pronta para melhorias visuais e estilização com **Tailwind** e **shadcn/ui**
+
+---
+
+## 🧱 Tecnologias Utilizadas
+
+- **Front-end**: Next.js + TypeScript
+- **Estilização**: TailwindCSS 
+- **HTTP Client**: Axios
+- **Back-end**: API Routes do Next.js (serverless), integrando com a PokeAPI
+- **Linguagem**: TypeScript
+
+---
+
+## 🚀 Rodando o Projeto Localmente
+
+### Pré-requisitos
+- Node.js 18+
+- npm ou yarn
+
+### Passos
 ```bash
+# Instalar dependências
+npm install
+
+# Rodar em modo dev
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+# Acessar no navegador
+http://localhost:3000
 ```
+--- 
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## ⚙️ Estrutura de Pastas
+/components
+  card_skeleton.tsx   -> Componente de placeholder para loading
+  pagination.tsx      -> Componente de paginação
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+/lib
+  /ai                 -> Mock da IA (frases, curiosidades, dicas)
+    battle_tips.ts
+    fun_facts.ts
+    quotes.ts
+    index.ts          -> Builder que gera a "IA mockada" combinando quotes, facts e tips
+  pokeapi.ts          -> Configuração do cliente HTTP para a PokeAPI
+  formatters.ts       -> Utilitários para formatar altura (m) e peso (kg) a partir dos dados da PokeAPI
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+/pages
+  /api/pokemon
+    [name_or_id].ts   -> Endpoint para buscar detalhes de 1 Pokémon
+    index.ts          -> Endpoint para listar Pokémons com paginação
+  /pokemon
+    [name].tsx        -> Página de detalhes do Pokémon
+  index.tsx           -> Página inicial com listagem
+  _app.tsx            -> Configuração base da aplicação
 
-## Learn More
+/public
+  placeholder.png     -> Imagem fallback
 
-To learn more about Next.js, take a look at the following resources:
+/services
+  pokemon.ts          -> Serviço de integração com endpoints internos
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+/styles
+  globals.css         -> Estilos globais
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+/types
+  pokemon.ts          -> Tipagens do domínio (Pokémon, stats, etc.)
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🤖 IA Mockada
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+O desafio sugeria que a inclusão de uma funcionalidade de **IA** seria um diferencial.  
+Como não foi utilizada nenhuma API de IA externa, foi implementado um **mock** no back-end (em `/lib/ai`).
+
+Esse mock retorna dados adicionais para cada Pokémon:
+
+- **ai_quote** → uma frase divertida como se fosse dita pelo próprio Pokémon  
+- **ai_fun_fact** → uma curiosidade fictícia sobre o Pokémon  
+- **battle_tips** → dicas genéricas de batalha relacionadas ao tipo do Pokémon  
+
+Essas informações são exibidas junto aos detalhes de cada Pokémon, simulando um comportamento de IA e enriquecendo a experiência do usuário.
+
+---
+## 🚧 Melhorias Futuras
+- Melhorias de UI/UX com shadcn/ui
+- Tradução de tipos e habilidades para PT-BR
+- Deploy em Vercel
