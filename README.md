@@ -5,6 +5,7 @@ O projeto consome a [PokeAPI](https://pokeapi.co/) e permite explorar Pokémons 
 Como diferencial, foi incluída uma funcionalidade de **IA mockada**, que gera curiosidades e frases divertidas sobre cada Pokémon.
 
 ![Demonstração do Projeto](.github/assets/demo.gif)
+
 ---
 
 ## ✨ Funcionalidades
