@@ -1,7 +1,9 @@
 # Pokédex - Desafio Técnico
 
 Aplicação desenvolvida como desafio técnico para avaliar conhecimentos em **Next.js**, **TypeScript** e integração entre front-end e back-end.  
+
 O projeto consome a [PokeAPI](https://pokeapi.co/) e permite explorar Pokémons com listagem paginada, busca por nome/ID, e página de detalhes.  
+
 Como diferencial, foi incluída uma funcionalidade de **IA mockada**, que gera curiosidades e frases divertidas sobre cada Pokémon.
 
 ![Demonstração do Projeto](.github/assets/demo.gif)
@@ -11,7 +13,7 @@ Como diferencial, foi incluída uma funcionalidade de **IA mockada**, que gera c
 ## ✨ Funcionalidades
 
 - **Listagem de Pokémons** com paginação
-- **Busca** por nome ou ID
+- **Busca** por nome
 - **Página de detalhes** de cada Pokémon com:
   - Nome, imagem oficial e tipos
   - Status base (força, velocidade, etc.)
